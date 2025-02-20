@@ -5,12 +5,11 @@ class OrderModel {
   final String cartId;
   final String status;
 
-  OrderModel(
-      {required this.orderId,
-      required this.userId,
-      required this.cartId,
-      required this.status,
-      required this.grandTotal});
+  OrderModel({required this.orderId,
+    required this.userId,
+    required this.cartId,
+    required this.status,
+    required this.grandTotal});
 
   factory OrderModel.fromJson(Map<String, dynamic> json) {
     return OrderModel(
@@ -23,7 +22,7 @@ class OrderModel {
 
   static Map<String, OrderModel> fromMapJson(Map<String, dynamic> json) {
     return json.map(
-      (key, value) => MapEntry(key, OrderModel.fromJson(value)),
+          (key, value) => MapEntry(key, OrderModel.fromJson(value)),
     );
   }
 }
@@ -36,13 +35,12 @@ class PaymentModel {
   final String userId;
   final String orderId;
 
-  PaymentModel(
-      {required this.paymentId,
-      required this.paymentMethod,
-      required this.status,
-      required this.grandTotal,
-      required this.userId,
-      required this.orderId});
+  PaymentModel({required this.paymentId,
+    required this.paymentMethod,
+    required this.status,
+    required this.grandTotal,
+    required this.userId,
+    required this.orderId});
 
   factory PaymentModel.fromJson(Map<String, dynamic> json) {
     return PaymentModel(
@@ -62,19 +60,21 @@ class OrderDetailModel {
   final num unitPrice;
   final num totalPrice;
   final String orderId;
+  final String productId;
 
-  OrderDetailModel(
-      {required this.orderDetailId,
-      required this.status,
-      required this.quantity,
-      required this.unitPrice,
-      required this.totalPrice,
-      required this.orderId});
+  OrderDetailModel({required this.orderDetailId,
+    required this.status,
+    required this.quantity,
+    required this.unitPrice,
+    required this.totalPrice,
+    required this.productId,
+    required this.orderId});
 
   factory OrderDetailModel.fromJson(Map<String, dynamic> json) {
     return OrderDetailModel(
         orderDetailId: json['orderDetailId'] ?? '',
         status: json['status'] ?? '',
+        productId: json['product_id'] ?? '',
         quantity: json['quantity'] ?? '',
         unitPrice: json['unitPrice'] ?? '',
         totalPrice: json['totalPrice'] ?? '',
@@ -87,10 +87,9 @@ class OrderPromoCodeModel {
   final String orderId;
   final String promoCodeID;
 
-  OrderPromoCodeModel(
-      {required this.orderPromoCodeId,
-      required this.orderId,
-      required this.promoCodeID});
+  OrderPromoCodeModel({required this.orderPromoCodeId,
+    required this.orderId,
+    required this.promoCodeID});
 
   factory OrderPromoCodeModel.fromJson(Map<String, dynamic> json) {
     return OrderPromoCodeModel(
@@ -102,7 +101,7 @@ class OrderPromoCodeModel {
   static Map<String, OrderPromoCodeModel> fromMapJson(
       Map<String, dynamic> json) {
     return json.map(
-      (key, value) => MapEntry(key, OrderPromoCodeModel.fromJson(value)),
+          (key, value) => MapEntry(key, OrderPromoCodeModel.fromJson(value)),
     );
   }
 }
@@ -120,18 +119,32 @@ class PromoCodeModel {
   final String minimumOrderValue;
   final List<OrderPromoCodeModel> orderPromoCodes;
 
-  PromoCodeModel(
-      {required this.promoCodeId,
-      required this.name,
-      required this.code,
-      required this.description,
-      required this.startDate,
-      required this.endDate,
-      required this.status,
-      required this.discountType,
-      required this.discountPercentage,
-      required this.minimumOrderValue,
-      required this.orderPromoCodes});
+  PromoCodeModel({required this.promoCodeId,
+    required this.name,
+    required this.code,
+    required this.description,
+    required this.startDate,
+    required this.endDate,
+    required this.status,
+    required this.discountType,
+    required this.discountPercentage,
+    required this.minimumOrderValue,
+    required this.orderPromoCodes});
+
+  factory PromoCodeModel.fromJson(Map<String, dynamic> json){
+    return PromoCodeModel(
+        promoCodeId: json['promoCodeId'] ?? '',
+        name: json['name'] ?? '',
+        code: json['code'] ?? '',
+        description: json['description'] ?? '',
+        startDate: json['startDate'] ?? '',
+        endDate: json['endDate'] ?? '',
+        status: json['status'] ?? '',
+        discountType: json['discountType'] ?? '',
+        discountPercentage: json['discountPercentage'] ?? '',
+        minimumOrderValue: json['minimumOrderValue'] ?? '',
+        orderPromoCodes: json['orderPromoCodes'] ?? '');
+  }
 }
 
 class ReturnOrderModel {
@@ -139,18 +152,20 @@ class ReturnOrderModel {
   final String reason;
   final num refundAmount;
   final String orderId;
+  final String status;
 
-  ReturnOrderModel(
-      {required this.returnOrderId,
-      required this.reason,
-      required this.refundAmount,
-      required this.orderId});
+  ReturnOrderModel({required this.returnOrderId,
+    required this.reason,
+    required this.status,
+    required this.refundAmount,
+    required this.orderId});
 
   factory ReturnOrderModel.fromJson(Map<String, dynamic> json) {
     return ReturnOrderModel(
         returnOrderId: json['returnOrderId'] ?? '',
         reason: json['reason'] ?? '',
         refundAmount: json['refundAmount'] ?? '',
+        status: json['status'] ?? '',
         orderId: json['orderId'] ?? '');
   }
 }
@@ -160,21 +175,20 @@ class FeedBackModel {
   final int rating;
   final String comment;
   final String userId;
-  final String product;
+  final String productId;
 
-  FeedBackModel(
-      {required this.feedBackId,
-      required this.rating,
-      required this.comment,
-      required this.userId,
-      required this.product});
+  FeedBackModel({required this.feedBackId,
+    required this.rating,
+    required this.comment,
+    required this.userId,
+    required this.productId});
 
   factory FeedBackModel.fromJson(Map<String, dynamic> json) {
     return FeedBackModel(
         feedBackId: json['feedBackId'] ?? '',
         rating: json['rating'] ?? '',
         comment: json['comment'] ?? '',
-        userId: json['userId'] ?? '',
-        product: json['product'] ?? '');
+        userId: json['user_id'] ?? '',
+        productId: json['product_id'] ?? '');
   }
 }
