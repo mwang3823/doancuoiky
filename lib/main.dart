@@ -1,15 +1,19 @@
-import 'package:doancuoiky/ViewModels/Product.dart';
-import 'package:doancuoiky/ViewModels/User.dart';
+import 'package:doancuoiky/View/Logins/Welcome.dart';
 import 'package:flutter/material.dart';
 
 void main() {
   runApp(const MyApp());
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Welcome(),
+    );
   }
 }
