@@ -337,19 +337,21 @@ class _RegisterState extends State<Register> {
                                   activeColor: lightColorScheme.primary,
                                 ),
                                 const Text(
-                                  'Remember me',
-                                  style: TextStyle(color: Colors.black45),
+                                  'I agree to the processing of ',
+                                  style: TextStyle(
+                                    color: Colors.black54,
+                                  ),
+                                ),
+                                GestureDetector(
+                                  child: Text(
+                                    'Personal data',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: lightColorScheme.primary,
+                                    ),
+                                  ),
                                 ),
                               ],
-                            ),
-                            GestureDetector(
-                              child: Text(
-                                'Forget password?',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: lightColorScheme.primary,
-                                ),
-                              ),
                             ),
                           ],
                         ),
@@ -359,7 +361,7 @@ class _RegisterState extends State<Register> {
                           width: double.infinity,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Color(0xff000000),
+                              backgroundColor: Color(0xffBDA687),
                               padding: const EdgeInsets.symmetric(
                                 vertical: 15.0,
                                 horizontal: 0,

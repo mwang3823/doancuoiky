@@ -1,4 +1,5 @@
 import 'package:doancuoiky/View/Logins/Custom_Scaffold.dart';
+import 'package:doancuoiky/View/Logins/Forget_password.dart';
 import 'package:doancuoiky/View/Logins/Register.dart';
 import 'package:doancuoiky/View/Logins/toggle_password.dart';
 import 'package:doancuoiky/View/Themes/Theme.dart';
@@ -157,8 +158,16 @@ class _LoginState extends State<Login> {
                               ],
                             ),
                             GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (e) => const ForgetPassword(),
+                                  ),
+                                );
+                              },
                               child: Text(
-                                'Forget password?',
+                                'Quên mật khẩu?',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: lightColorScheme.primary,
