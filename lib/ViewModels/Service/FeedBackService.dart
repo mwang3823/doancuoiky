@@ -8,7 +8,7 @@ import 'package:doancuoiky/Config/CustomInterceptor.dart';
 import 'package:doancuoiky/Config/Storage.dart';
 import 'package:doancuoiky/Models/Order.dart';
 
-class Feedback {
+class FeedbackService {
   static final String url="http://192.168.1.4:8181";
   final _dio = Dio(BaseOptions(
       baseUrl: url,

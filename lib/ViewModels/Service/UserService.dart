@@ -3,7 +3,7 @@ import 'package:doancuoiky/Config/CustomInterceptor.dart';
 import 'package:doancuoiky/Config/Storage.dart';
 import 'package:doancuoiky/Models/User.dart';
 
-class User {
+class UserService {
   static final String url="http://192.168.1.4:8181";
   final _dio = Dio(
     BaseOptions(
@@ -129,7 +129,7 @@ class User {
     return null;
   }
 
-  Future<List<UserModel>> getAllUser(String id) async {
+  Future<List<UserModel>> getAllUser() async {
     try {
       final response = await _dio.get('/users/',
           options: Options(

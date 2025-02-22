@@ -8,7 +8,7 @@ import 'package:dio/dio.dart';
 import 'package:doancuoiky/Config/CustomInterceptor.dart';
 import 'package:doancuoiky/Config/Storage.dart';
 import 'package:doancuoiky/Models/Delivery.dart';
-class Payment {
+class DeliveryDetailService {
   static final String url = "http://192.168.1.4:8181";
   final _storage = Storage();
   final _dio = Dio(

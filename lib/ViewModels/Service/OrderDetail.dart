@@ -3,7 +3,7 @@ import 'package:doancuoiky/Config/CustomInterceptor.dart';
 import 'package:doancuoiky/Config/Storage.dart';
 import 'package:doancuoiky/Models/Order.dart';
 
-class Category {
+class OrderDetailService {
   static final String url = "http://192.168.1.4:8181";
   final _storage = Storage();
   final _dio = Dio(

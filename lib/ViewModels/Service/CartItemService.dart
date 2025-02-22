@@ -1,17 +1,16 @@
 import 'package:doancuoiky/Models/Cart.dart';
-import '../Config/CustomInterceptor.dart';
-import '../Config/Storage.dart';
 import 'package:dio/dio.dart';
+import '../../Config/CustomInterceptor.dart';
+import '../../Config/Storage.dart';
 
-class CartItem {
+class CartItemService {
   static final String url = "http://192.168.1.4:8181";
   final _storage = Storage();
   final _dio = Dio(
       BaseOptions(baseUrl: url, headers: {'Content-Type': 'application/json'}))
     ..interceptors.add(CustomInterceptor());
 
-  Future<CartItemModel?> addProductToCart(
-      CartItemModel cartItem, String cartID) async {
+  Future<CartItemModel?> addProductToCart(CartItemModel cartItem, String cartID) async {
     try {
       final response = await _dio.post('/cartitems/addproduct/$cartID',
           options: Options(

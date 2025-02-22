@@ -7,7 +7,7 @@ import 'package:doancuoiky/Config/CustomInterceptor.dart';
 import 'package:doancuoiky/Config/Storage.dart';
 import 'package:doancuoiky/Models/Order.dart';
 
-class ReturnOrder {
+class ReturnOrderService {
   static final String url="http://192.168.1.4:8181";
   final _dio = Dio(BaseOptions(
       baseUrl: url,
@@ -54,7 +54,7 @@ class ReturnOrder {
     return false;
   }
 
-  Future<List<ReturnOrderModel>?> getAllReturnOrders(String feedBackId) async {
+  Future<List<ReturnOrderModel>> getAllReturnOrders() async {
     try {
       final response = await _dio.get(
         '/returnorders/all',
@@ -73,28 +73,23 @@ class ReturnOrder {
     } catch (e) {
       throw Exception('Error: $e');
     }
-    return null;
+    return [];
   }
 
-  Future<List<ReturnOrderModel>> getReturnOrderByID(String productId) async {
+  Future<ReturnOrderModel?> getReturnOrderByID(String returnOrderId) async {
     try {
       final response = await _dio.get(
-        '/returnorders/$productId',
+        '/returnorders/$returnOrderId',
         options: Options(
             headers: {'Authorization': 'Bearer ${_storage.read('token')}'}),
       );
       if (response.statusCode == 200) {
-        final List<dynamic> list = response.data;
-        final data = list
-            .map(
-              (e) => ReturnOrderModel.fromJson(e),
-        )
-            .toList();
+        final data = ReturnOrderModel.fromJson(response.data);
         return data;
       }
     } catch (e) {
       throw Exception('Error: $e');
     }
-    return [];
+    return null;
   }
 }

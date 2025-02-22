@@ -1,10 +1,10 @@
-import '../Config/CustomInterceptor.dart';
-import '../Config/Storage.dart';
+import '../../Config/CustomInterceptor.dart';
+import '../../Config/Storage.dart';
 import 'package:dio/dio.dart';
 
-import '../Models/Cart.dart';
+import '../../Models/Cart.dart';
 
-class Cart {
+class CartService {
   static final String url = "http://192.168.1.4:8181";
   final _storage = Storage();
   final _dio = Dio(
