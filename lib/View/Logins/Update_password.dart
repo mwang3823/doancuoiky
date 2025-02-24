@@ -1,17 +1,18 @@
 import 'package:doancuoiky/View/Logins/Custom_Scaffold.dart';
 import 'package:doancuoiky/View/Logins/Login.dart';
+import 'package:doancuoiky/ViewModels/Controller/UserController.dart';
 import 'package:flutter/material.dart';
-
-class UpdatePassword extends StatefulWidget {
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+class UpdatePassword extends ConsumerStatefulWidget {
   const UpdatePassword({super.key});
 
   @override
-  State<UpdatePassword> createState() => _UpdatePasswordState();
+  _UpdatePasswordState createState() => _UpdatePasswordState();
 }
 
-class _UpdatePasswordState extends State<UpdatePassword> {
-  late String newPassword;
-  late String verifyPassword;
+class _UpdatePasswordState extends ConsumerState<UpdatePassword> {
+  final TextEditingController _newPassword=TextEditingController();
+  final TextEditingController _verifyPassword=TextEditingController();
 
   bool flagShow2 = true;
   bool flagShow3 = true;
@@ -47,11 +48,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                         //Mật khẩu mới
                         TextField(
                           obscureText: flagShow2,
-                          onChanged: (value) {
-                            setState(() {
-                              newPassword = value.toString();
-                            });
-                          },
+                          controller: _newPassword,
                           style: const TextStyle(
                             color: Colors.black,
                             fontFamily: 'Coiny-Regular-font',
@@ -87,9 +84,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                         //Nhập lại mật khẩu mới
                         TextField(
                           obscureText: flagShow3,
-                          onChanged: (value) {
-                            verifyPassword = value.toString();
-                          },
+                          controller: _verifyPassword,
                           style: const TextStyle(
                             color: Colors.black,
                             fontFamily: 'Coiny-Regular-font',
@@ -125,36 +120,7 @@ class _UpdatePasswordState extends State<UpdatePassword> {
                                 backgroundColor:
                                     const Color.fromRGBO(94, 200, 248, 1)),
                             onPressed: () {
-                              // if (newPassword.isEmpty ||
-                              //     verifyPassword.isEmpty) {
-                              //   showMessage(
-                              //       context, "Vui lòng nhập đầy đủ thông tin");
-                              // } else if (newPassword != verifyPassword) {
-                              //   showMessage(context, "Thông tin không khớp");
-                              // } else {
-                              //   // if (userProvider.user != null) {
-                              //   //   userProvider
-                              //   //       .updateUserPassword(newPassword)
-                              //   //       .then((_) {
-                              //   //     if (userProvider.isLoading == false) {
-                              //   //       Navigator.pushAndRemoveUntil(
-                              //   //         context,
-                              //   //         MaterialPageRoute(
-                              //   //           builder: (context) => const Login(),
-                              //   //         ),
-                              //   //         (Route<dynamic> route) => false,
-                              //   //       );
-                              //   //     }
-                              //   //   });
-                              //   // }
-
-                              // }
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (e) => Login(),
-                                ),
-                              );
+                              ref.read(userProvider.notifier).changePassword( _verifyPassword.text, context);
                             },
                             child: const Text(
                               "Tiếp theo",

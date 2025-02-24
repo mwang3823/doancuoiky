@@ -3,27 +3,33 @@ import 'package:doancuoiky/View/Logins/Forget_password.dart';
 import 'package:doancuoiky/View/Logins/Register.dart';
 import 'package:doancuoiky/View/Logins/toggle_password.dart';
 import 'package:doancuoiky/View/Themes/Theme.dart';
+import 'package:doancuoiky/ViewModels/Controller/UserController.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_icons/simple_icons.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class Login extends StatefulWidget {
+class Login extends ConsumerStatefulWidget {
   const Login({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  _LoginState createState() => _LoginState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginState extends ConsumerState<Login> {
   String email = "", password = "";
-  late String _email;
-  late String _password;
+  final TextEditingController _email=TextEditingController();
+  final TextEditingController _password=TextEditingController();
 
   bool isSecurePassword = true;
   final formSignInKey = GlobalKey<FormState>();
   bool rememberPassword = true;
 
+
+
   @override
   Widget build(BuildContext context) {
+    final userState=ref.read(userProvider.notifier);
+    // final success=ref.read(isSuccess.notifier);
     // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: () async {
@@ -73,9 +79,7 @@ class _LoginState extends State<Login> {
                             }
                             return null;
                           },
-                          onChanged: (value) {
-                            _email = value;
-                          },
+                          controller: _email,
                           decoration: InputDecoration(
                             label: const Text('Email'),
                             hintText: 'Enter Email',
@@ -106,9 +110,7 @@ class _LoginState extends State<Login> {
                             }
                             return null;
                           },
-                          onChanged: (value) {
-                            _password = value;
-                          },
+                          controller: _password,
                           decoration: InputDecoration(
                             suffixIcon: TogglePassword(
                               isSecurePassword: isSecurePassword,
@@ -162,7 +164,7 @@ class _LoginState extends State<Login> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (e) => const ForgetPassword(),
+                                    builder: (e) => ForgetPassword(),
                                   ),
                                 );
                               },
@@ -191,7 +193,10 @@ class _LoginState extends State<Login> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
-                            onPressed: () {},
+                            onPressed: () async{
+                              userState.login(_email.text, _password.text, ref, context);
+
+                            },
                             child: const Text(
                               'Đăng nhập',
                               style: TextStyle(
@@ -268,7 +273,7 @@ class _LoginState extends State<Login> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (e) => const Register(),
+                                    builder: (e) =>  Register(),
                                   ),
                                 );
                               },

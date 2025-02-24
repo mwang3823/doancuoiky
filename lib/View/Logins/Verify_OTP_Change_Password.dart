@@ -5,14 +5,14 @@ import 'package:doancuoiky/View/Widget/ShowEvent.dart';
 import 'package:doancuoiky/ViewModels/Controller/UserController.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-class VerifyOtp extends ConsumerStatefulWidget {
-  const VerifyOtp({super.key});
+class VerifyOtpChangePassword extends ConsumerStatefulWidget {
+  const VerifyOtpChangePassword({super.key});
 
   @override
   _VerifyOtpState createState() => _VerifyOtpState();
 }
 
-class _VerifyOtpState extends ConsumerState<VerifyOtp> {
+class _VerifyOtpState extends ConsumerState<VerifyOtpChangePassword> {
   @override
   Widget build(BuildContext context) {
     final userState=ref.watch(userProvider.notifier);
@@ -49,8 +49,7 @@ class _VerifyOtpState extends ConsumerState<VerifyOtp> {
                   ),
                   TextField(
                     onSubmitted: (value) {
-                      final otpViewModel = ref.read(userProvider.notifier);
-                      otpViewModel.verifyOtp(_otp.text, context);
+                      ref.read(userProvider.notifier).verifyOtpChangPassword(_otp.text, context);
                     },
                     keyboardType: TextInputType.number,
                     controller: _otp,
@@ -96,8 +95,7 @@ class _VerifyOtpState extends ConsumerState<VerifyOtp> {
                           backgroundColor:
                               const Color.fromRGBO(94, 200, 248, 1)),
                       onPressed: () {
-                        final otpViewModel = ref.read(userProvider.notifier);
-                        otpViewModel.verifyOtp(_otp.text, context);
+                        ref.read(userProvider.notifier).verifyOtpChangPassword(_otp.text, context);
                       },
 
                       child: const Text(

@@ -19,7 +19,7 @@ class CartController extends StateNotifier<AsyncValue<CartModel?>> {
   CartController(this.service) : super(const AsyncValue.data(null));
 
   // Lấy hoặc tạo giỏ hàng cho người dùng
-  Future<void> getOrCreateCart(String userId) async {
+  Future<void> getOrCreateCart(int userId) async {
     try {
       state = const AsyncLoading();
       final cart = await service.getOrCreateCartForUser(userId);

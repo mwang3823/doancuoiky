@@ -8,7 +8,7 @@ class CartService {
   static final String url = "http://192.168.1.4:8181";
   final _storage = Storage();
   final _dio = Dio(
-      BaseOptions(baseUrl: url, headers: {'Content-Type': 'application/json'}))
+      BaseOptions(baseUrl: url, headers: {'Content-Type':'application/json'}))
     ..interceptors.add(CustomInterceptor());
 
   Future<CartModel?> createCategory(CartModel category, String userId) async {
@@ -27,12 +27,13 @@ class CartService {
     return null;
   }
 
-  Future<CartModel?> getOrCreateCartForUser(String userId) async {
+  Future<CartModel?> getOrCreateCartForUser(int userId) async {
     try {
+      final token=await  _storage.read('token');
       final response = await _dio.post(
         '/carts/$userId',
         options: Options(
-            headers: {'Authorization': 'Bearer ${_storage.read('token')}'}),
+            headers: {'Authorization': 'Bearer $token'}),
       );
       if (response.statusCode == 200) {
         final data = CartModel.fromJson(response.data);

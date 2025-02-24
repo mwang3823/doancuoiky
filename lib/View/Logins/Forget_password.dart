@@ -1,20 +1,16 @@
 import 'package:doancuoiky/View/Logins/Custom_Scaffold.dart';
-import 'package:doancuoiky/View/Logins/Verify_OTP.dart';
+import 'package:doancuoiky/ViewModels/Controller/UserController.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ForgetPassword extends StatefulWidget {
-  const ForgetPassword({super.key});
-
-  @override
-  State<ForgetPassword> createState() => _ForgetPasswordState();
-}
-
-class _ForgetPasswordState extends State<ForgetPassword> {
+class ForgetPassword extends ConsumerWidget {
   late String _email;
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context,WidgetRef ref) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
+    final TextEditingController _email=TextEditingController();
     return CustomScaffold(
       child: Stack(
         children: [
@@ -47,6 +43,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                   children: [
                     // Email
                     TextField(
+                      controller: _email,
                       style: const TextStyle(
                         color: Colors.black,
                         fontFamily: 'Coiny-Regular-font',
@@ -71,8 +68,8 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      onChanged: (value) {
-                        _email = value.toString();
+                      onSubmitted: (value) {
+                        ref.read(userProvider.notifier).getNewPassword(_email.text, context);
                       },
                     ),
                     SizedBox(
@@ -80,12 +77,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                     ),
                     ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => VerifyOtp(),
-                            ),
-                          );
+                          ref.read(userProvider.notifier).getNewPassword(_email.text, context);
                         },
                         style: ElevatedButton.styleFrom(
                             backgroundColor:

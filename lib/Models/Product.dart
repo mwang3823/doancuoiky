@@ -1,51 +1,60 @@
 class ProductModel {
-  final String productId;
-  final String name;
-  final num price;
-  final String image;
-  final num sales;
-  final int size;
-  final String color;
-  final String specification;
-  final String description;
-  final String expiry;
-  final int stockNumber;
-  final String stockLevel;
-  final String categoryId;
-  final String manufacturerId;
+  final String? name;
+  final int? price;
+  final int? sales;
+  final String? image;
+  final int? size;
+  final String? color;
+  final String? specification;
+  final String? description;
+  final int? stocknumber;
+  final String? stocklevel;
+  final int? category_id;
+  final int? manufacturer_id;
+  final String? expiry;
+  final int? ID;
+  // final ManufacturerModel? manufacturer;
+  // final CategoryModel? category;
 
   ProductModel(
-      {required this.productId,
-      required this.name,
-      required this.price,
-      required this.image,
-      required this.sales,
-      required this.size,
-      required this.color,
-      required this.specification,
-      required this.description,
-      required this.expiry,
-      required this.stockNumber,
-      required this.stockLevel,
-      required this.categoryId,
-      required this.manufacturerId});
+      {
+        required this.name,
+        required this.price,
+        required this.image,
+        required this.size,
+        required this.color,
+        required this.specification,
+        required this.description,
+        required this.expiry,
+        required this.stocknumber,
+        required this.stocklevel,
+        required this.category_id,
+        required this.manufacturer_id,
+        required this.ID,
+        // required this.manufacturer,
+        // required this.category,
+        required this.sales,
+      });
 
-  factory ProductModel.fromJson(Map<String, dynamic> json) {
+  factory ProductModel.fromJson(Map<String, dynamic>json){
     return ProductModel(
-        productId: json['product_id'] ?? '',
-        name: json['name'] ?? '',
-        price: json['price'] ?? '',
-        image: json['image'] ?? '',
-        sales: json['sales'] ?? '',
-        size: json['size'] ?? '',
-        color: json['color'] ?? '',
-        specification: json['specification'] ?? '',
-        description: json['description'] ?? '',
-        expiry: json['expiry'] ?? '',
-        stockNumber: json['stockNumber'] ?? '',
-        stockLevel: json['stockLevel'] ?? '',
-        categoryId: json['categoryId'] ?? '',
-        manufacturerId: json['manufacturerId'] ?? '');
+      name: json['name'],
+      price:int.tryParse(json['price'].toString()),
+      image: json['image'],
+      size: json['size'],
+      color: json['color'],
+      specification: json['specification'],
+      description: json['description'],
+      expiry: json['expiry'],
+      stocknumber: json['stocknumber'],
+      stocklevel: json['stocklevel'],
+      category_id: json['category_id'],
+      manufacturer_id: json['manufacturer_id'],
+      ID: json['ID'],
+      // category: CategoryModel.fromJson(json['Category']),
+      // manufacturer: ManufacturerModel.fromJson(json['Manufacturer']),
+      sales:json['sales'],
+    );
   }
 
   static Map<String,ProductModel> fromMapJson(Map<String,dynamic> json){
@@ -67,9 +76,9 @@ class CategoryModel {
 
   factory CategoryModel.fromJson(Map<String, dynamic> json) {
     return CategoryModel(
-        categoryId: json['category_id'] ?? '',
-        name: json['name'] ?? '',
-        description: json['description'] ?? '',
+        categoryId: json['category_id'],
+        name: json['name'],
+        description: json['description'],
         products: ProductModel.fromMapJson(json['products']??''));
   }
 }
@@ -90,10 +99,10 @@ class ManufacturerModel {
 
   factory ManufacturerModel.fromJson(Map<String, dynamic> json) {
     return ManufacturerModel(
-        manufacturerId: json['manufacturer_id'] ?? '',
-        name: json['name'] ?? '',
-        address: json['address'] ?? '',
-        contact: json['contact'] ?? '',
-        products: ProductModel.fromMapJson(json['products'] ?? ''));
+        manufacturerId: json['manufacturer_id'],
+        name: json['name'],
+        address: json['address'],
+        contact: json['contact'],
+        products: ProductModel.fromMapJson(json['products']));
   }
 }

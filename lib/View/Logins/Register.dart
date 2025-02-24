@@ -1,26 +1,30 @@
+import 'package:doancuoiky/Models/User.dart';
 import 'package:doancuoiky/View/Logins/Custom_Scaffold.dart';
 import 'package:doancuoiky/View/Logins/Login.dart';
 import 'package:doancuoiky/View/Logins/toggle_password.dart';
 import 'package:doancuoiky/View/Themes/Theme.dart';
+import 'package:doancuoiky/ViewModels/Controller/UserController.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_icons/simple_icons.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class Register extends StatefulWidget {
+class Register extends ConsumerStatefulWidget {
   const Register({super.key});
 
   @override
-  State<Register> createState() => _RegisterState();
+  _RegisterState createState() => _RegisterState();
 }
 
-class _RegisterState extends State<Register> {
-  String email = "", password = "";
-  late String _email;
-  late String _password;
-  late String _fName;
-  late String _lName;
-  late String _phoneNumber;
-  late String _address;
-  late String _verifyPassword;
+class _RegisterState extends ConsumerState<Register> {
+  final TextEditingController email = TextEditingController();
+  final TextEditingController password = TextEditingController();
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _password = TextEditingController();
+  final TextEditingController _fName = TextEditingController();
+  final TextEditingController _lName = TextEditingController();
+  final TextEditingController _phoneNumber = TextEditingController();
+  final TextEditingController _address = TextEditingController();
+  final TextEditingController _verifyPassword = TextEditingController();
 
   bool isSecurePassword = true;
   bool isComfirmPassword = true;
@@ -29,6 +33,7 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
+    final userState=ref.read(userProvider.notifier);
     // ignore: deprecated_member_use
     return WillPopScope(
       onWillPop: () async {
@@ -60,21 +65,21 @@ class _RegisterState extends State<Register> {
                         const SizedBox(height: 15.0),
                         // Form Email
                         TextFormField(
+                          controller: _email,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter Email';
                             }
                             return null;
                           },
-                          onChanged: (value) {
-                            _email = value;
-                          },
                           decoration: InputDecoration(
                             label: const Text('Email'),
                             hintText: 'Enter Email',
                             hintStyle: const TextStyle(color: Colors.black),
-                            filled: true, // Cho phép màu nền
-                            fillColor: Colors.grey[200], // Chọn màu nền
+                            filled: true,
+                            // Cho phép màu nền
+                            fillColor: Colors.grey[200],
+                            // Chọn màu nền
                             border: OutlineInputBorder(
                               borderSide: const BorderSide(
                                 color: Colors.black, // Default border color
@@ -92,6 +97,7 @@ class _RegisterState extends State<Register> {
                         const SizedBox(height: 15.0),
                         // Form PassWord
                         TextFormField(
+                          controller: _password,
                           obscureText: isSecurePassword,
                           // Nhập password ẩn
                           obscuringCharacter: '*',
@@ -100,9 +106,6 @@ class _RegisterState extends State<Register> {
                               return 'Please enter Password';
                             }
                             return null;
-                          },
-                          onChanged: (value) {
-                            _password = value;
                           },
                           decoration: InputDecoration(
                             suffixIcon: TogglePassword(
@@ -116,8 +119,10 @@ class _RegisterState extends State<Register> {
                             label: const Text('Password'),
                             hintText: 'Enter Password',
                             hintStyle: const TextStyle(color: Colors.black26),
-                            filled: true, // Cho phép màu nền
-                            fillColor: Colors.grey[200], // Chọn màu nền
+                            filled: true,
+                            // Cho phép màu nền
+                            fillColor: Colors.grey[200],
+                            // Chọn màu nền
                             border: OutlineInputBorder(
                               borderSide: const BorderSide(
                                 color: Colors.black12, // Default border color
@@ -135,6 +140,7 @@ class _RegisterState extends State<Register> {
                         const SizedBox(height: 15.0),
                         // Comfirm PassWord
                         TextFormField(
+                          controller: _verifyPassword,
                           obscureText: isComfirmPassword,
                           // Nhập password ẩn
                           obscuringCharacter: '*',
@@ -143,9 +149,6 @@ class _RegisterState extends State<Register> {
                               return 'Please enter Password';
                             }
                             return null;
-                          },
-                          onChanged: (value) {
-                            _verifyPassword = value;
                           },
                           decoration: InputDecoration(
                             suffixIcon: TogglePassword(
@@ -159,8 +162,10 @@ class _RegisterState extends State<Register> {
                             label: const Text('Xác nhận Password'),
                             hintText: 'Enter Password',
                             hintStyle: const TextStyle(color: Colors.black26),
-                            filled: true, // Cho phép màu nền
-                            fillColor: Colors.grey[200], // Chọn màu nền
+                            filled: true,
+                            // Cho phép màu nền
+                            fillColor: Colors.grey[200],
+                            // Chọn màu nền
                             border: OutlineInputBorder(
                               borderSide: const BorderSide(
                                 color: Colors.black12, // Default border color
@@ -183,14 +188,12 @@ class _RegisterState extends State<Register> {
                             // Họ
                             Expanded(
                               child: TextFormField(
+                                controller: _fName,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Please enter name';
                                   }
                                   return null;
-                                },
-                                onChanged: (value) {
-                                  _fName = value;
                                 },
                                 decoration: InputDecoration(
                                   label: const Text('Họ'),
@@ -198,8 +201,10 @@ class _RegisterState extends State<Register> {
                                   hintStyle: const TextStyle(
                                     color: Colors.black,
                                   ),
-                                  filled: true, // Cho phép màu nền
-                                  fillColor: Colors.grey[200], // Chọn màu nền
+                                  filled: true,
+                                  // Cho phép màu nền
+                                  fillColor: Colors.grey[200],
+                                  // Chọn màu nền
                                   border: OutlineInputBorder(
                                     borderSide: const BorderSide(
                                       color:
@@ -221,14 +226,12 @@ class _RegisterState extends State<Register> {
                             // Tên
                             Expanded(
                               child: TextFormField(
+                                controller: _lName,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Please enter name';
                                   }
                                   return null;
-                                },
-                                onChanged: (value) {
-                                  _lName = value;
                                 },
                                 decoration: InputDecoration(
                                   label: const Text('Tên'),
@@ -236,8 +239,10 @@ class _RegisterState extends State<Register> {
                                   hintStyle: const TextStyle(
                                     color: Colors.black,
                                   ),
-                                  filled: true, // Cho phép màu nền
-                                  fillColor: Colors.grey[200], // Chọn màu nền
+                                  filled: true,
+                                  // Cho phép màu nền
+                                  fillColor: Colors.grey[200],
+                                  // Chọn màu nền
                                   border: OutlineInputBorder(
                                     borderSide: const BorderSide(
                                       color:
@@ -260,21 +265,21 @@ class _RegisterState extends State<Register> {
                         const SizedBox(height: 15.0),
                         // địa chỉ
                         TextFormField(
+                          controller: _address,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter address';
                             }
                             return null;
                           },
-                          onChanged: (value) {
-                            _address = value;
-                          },
                           decoration: InputDecoration(
                             label: const Text('Địa chỉ'),
                             hintText: 'Nhập địa chỉ của bạn',
                             hintStyle: const TextStyle(color: Colors.black),
-                            filled: true, // Cho phép màu nền
-                            fillColor: Colors.grey[200], // Chọn màu nền
+                            filled: true,
+                            // Cho phép màu nền
+                            fillColor: Colors.grey[200],
+                            // Chọn màu nền
                             border: OutlineInputBorder(
                               borderSide: const BorderSide(
                                 color: Colors.black, // Default border color
@@ -292,21 +297,21 @@ class _RegisterState extends State<Register> {
                         const SizedBox(height: 15.0),
                         // số điện thoại
                         TextFormField(
+                          controller: _phoneNumber,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter phone';
                             }
                             return null;
                           },
-                          onChanged: (value) {
-                            _phoneNumber = value;
-                          },
                           decoration: InputDecoration(
                             label: const Text('Số điện thoại'),
                             hintText: 'Nhập số điện thoại của bạn',
                             hintStyle: const TextStyle(color: Colors.black),
-                            filled: true, // Cho phép màu nền
-                            fillColor: Colors.grey[200], // Chọn màu nền
+                            filled: true,
+                            // Cho phép màu nền
+                            fillColor: Colors.grey[200],
+                            // Chọn màu nền
                             border: OutlineInputBorder(
                               borderSide: const BorderSide(
                                 color: Colors.black, // Default border color
@@ -370,7 +375,20 @@ class _RegisterState extends State<Register> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              if (rememberPassword) {
+                                userState.register(
+                                    new UserModel(
+                                        fullName: _fName.text+_lName.text,
+                                        email: _email.text,
+                                        phoneNumber: _phoneNumber.text,
+                                        birthday: "",
+                                        password: _password.text,
+                                        address: _address.text,
+                                        userId: 1),
+                                    context);
+                              }
+                            },
                             child: const Text(
                               'Tạo tài khoản',
                               style: TextStyle(

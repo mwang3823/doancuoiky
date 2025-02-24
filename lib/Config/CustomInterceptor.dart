@@ -5,8 +5,7 @@ class CustomInterceptor extends Interceptor {
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     if (response.statusCode == 200 || response.statusCode == 201) {
-      print("${"Data: " +
-          response.data} - Status Message: ${response.statusMessage}");
+      // print("${"Data: " + response.data} - Status Message: ${response.statusMessage}");
     }
     handler.next(response);
   }

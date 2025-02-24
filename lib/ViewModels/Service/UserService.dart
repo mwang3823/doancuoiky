@@ -5,16 +5,10 @@ import 'package:doancuoiky/Models/User.dart';
 
 class UserService {
   static final String url="http://192.168.1.4:8181";
-  final _dio = Dio(
-    BaseOptions(
+  final _dio = Dio(BaseOptions(
       baseUrl: url,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    ),
-  )..interceptors.add(
-      CustomInterceptor(),
-    );
+      headers: {'Content-Type': 'application/json'}
+  ))..interceptors.add(CustomInterceptor());
   final storage = Storage();
 
   Future<bool> register(UserModel user) async {
@@ -30,7 +24,7 @@ class UserService {
           'address': user.address,
         },
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         return true;
       }
     } catch (e) {
@@ -42,7 +36,8 @@ class UserService {
   Future<bool> login(String email, String pass) async {
     try {
       final response = await _dio
-          .post('/users/login', data: {'email': 'mwang38203@gmail.com', 'password': 'wangwang'});
+          // .post('/users/login', data: {'email': 'mwang38203@gmail.com', 'password': 'wangwang'});
+          .post('/users/login', data: {'email': email, 'password': pass});
 
       if (response.statusCode == 200) return true;
     } catch (e) {
@@ -56,7 +51,8 @@ class UserService {
       final response = await _dio.post('/users/verify', data: {'otp': otp});
       if (response.statusCode == 200) {
         final token = response.data['token'];
-        storage.write('token', token);
+        await storage.write('token', token);
+        print("Token: $token");
         final data = UserModel.formJson(response.data['user']);
         return data;
       }
@@ -78,7 +74,8 @@ class UserService {
     return false;
   }
 
-  Future<UserModel?> changePassword(String oldPassword, String newPassword, String userId) async {
+  Future<UserModel?> changePassword(String oldPassword, String newPassword, int userId) async {
+    print(storage.read('token'));
     try {
       final response = await _dio.put('/users/$userId/password',
           options: Options(
@@ -96,15 +93,18 @@ class UserService {
 
   Future<bool> updateUser(UserModel user) async {
     try {
-      final response = await _dio.put("/users/${user.userId}",
-          data: {
-            'fullname': user.fullName,
-            'phonenumber': user.phoneNumber,
-            'email': user.email,
-            'password': user.password
-          },
+      final token=await storage.read('token');
+      final response = await _dio.put(
+          "/users/${user.userId}",
           options: Options(
-              headers: {'Authorization': 'Bearer ${storage.read('token')}'}));
+              headers: {'Authorization': 'Bearer $token'}),
+        data: {
+          'fullname': user.fullName,
+          'phonenumber': user.phoneNumber,
+          'email': user.email,
+          'password': user.password
+        },
+      );
       if (response.statusCode == 200) {
         return true;
       }
@@ -131,9 +131,12 @@ class UserService {
 
   Future<List<UserModel>> getAllUser() async {
     try {
+      final token=await storage.read('token');
       final response = await _dio.get('/users/',
           options: Options(
-              headers: {'Authorization': 'Bearer ${storage.read('token')}'}));
+              headers: {
+                'Authorization':'Bearer $token}'
+              }));
       if (response.statusCode == 200) {
         final List<dynamic> data = response.data;
         final list = data
@@ -162,6 +165,24 @@ class UserService {
       throw Exception("Error: $e");
     }
     return null;
+  }
+
+  Future<bool?> getNewPassword(String email)async{
+    try{
+      final response=await _dio.post("/users/resetpass",
+      data: {
+        "email":email
+      }
+      );
+      if(response.statusCode==200){
+        return true;
+      }
+      else{
+        return false;
+      }
+    }catch(e){
+      throw Exception("Error $e");
+    }
   }
 }
 

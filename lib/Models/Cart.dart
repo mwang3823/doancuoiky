@@ -4,24 +4,26 @@ class CartModel {
   final String cartId;
   final String userId;
   final String status;
-  Map<String, CartItemModel> cartItems;
-  Map<String,OrderModel> orders;
+  List<CartItemModel> cartItems;
+  // Map<String,OrderModel> orders;
 
-  CartModel(
-      {required this.cartId,
-      required this.userId,
-      required this.status,
-      required this.cartItems,
-      required this.orders});
+  CartModel({required this.cartId,
+    required this.userId,
+    required this.status,
+    required this.cartItems,
+    // required this.orders}
+  }
+      );
 
   factory CartModel.fromJson(Map<String, dynamic> json) {
     return CartModel(
-        cartId: json['cartId'] ?? '',
-        userId: json['userId'] ?? '',
-        status: json['status'] ?? '',
-        cartItems: CartItemModel.fromMapJson(json['cartItems'] ?? ''),
-        orders: OrderModel.fromMapJson(json['orders'] ?? ''));
+      cartId: json['cartId'] ?? '',
+      userId: json['userId'] ?? '',
+      status: json['status'] ?? '',
+      cartItems: (json['items'] as List<dynamic>?)?.map((item) => CartItemModel.fromJson(item)).toList() ?? [],
+    );
   }
+
 }
 
 class CartItemModel {

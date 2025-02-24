@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:doancuoiky/Config/CustomInterceptor.dart';
 import 'package:doancuoiky/Config/Storage.dart';
@@ -7,8 +9,8 @@ class ProductService {
   static final String url="http://192.168.1.4:8181";
   final _dio = Dio(BaseOptions(
       baseUrl: url,
-      headers: {'Content_Type': 'application/json'}))
-    ..interceptors.add(CustomInterceptor());
+      headers: {'Content-Type': 'application/json'}
+  ))..interceptors.add(CustomInterceptor());
   final _storage = Storage();
 
   Future<ProductModel?> createProduct(ProductModel product) async {
@@ -25,14 +27,14 @@ class ProductService {
           'color': product.color,
           'specification': product.specification,
           'expiry': product.expiry,
-          'stocknumber': product.stockNumber,
-          'stocklevel': product.stockLevel,
-          'category_id': product.categoryId,
-          'manufacturer_id': product.manufacturerId,
+          'stocknumber': product.stocknumber,
+          'stocklevel': product.stocklevel,
+          'category_id': product.category_id,
+          'manufacturer_id': product.manufacturer_id,
         },
       );
       if (response.statusCode == 200) {
-        final data = ProductModel.fromJson(response.data);
+        final data = ProductModel.fromJson(jsonDecode(response.data));
         return data;
       }
     } catch (e) {
@@ -44,7 +46,7 @@ class ProductService {
   Future<ProductModel?> updateProduct(ProductModel product) async {
     try {
       final response = await _dio.put(
-        '/products/${product.productId}',
+        '/products/${product.ID}',
         options: Options(
             headers: {'Authorization': 'Bearer ${_storage.read('token')}'}),
         data: {
@@ -55,14 +57,14 @@ class ProductService {
           'color': product.color,
           'specification': product.specification,
           'expiry': product.expiry,
-          'stocknumber': product.stockNumber,
-          'stocklevel': product.stockLevel,
-          'category_id': product.categoryId,
-          'manufacturer_id': product.manufacturerId,
+          'stocknumber': product.stocknumber,
+          'stocklevel': product.stocklevel,
+          'category_id': product.category_id,
+          'manufacturer_id': product.manufacturer_id,
         },
       );
       if (response.statusCode == 200) {
-        final data = ProductModel.fromJson(response.data);
+        final data = ProductModel.fromJson(jsonDecode(response.data));
         return data;
       }
     } catch (e) {
@@ -95,7 +97,7 @@ class ProductService {
             headers: {'Authorization': 'Bearer ${_storage.read('token')}'}),
       );
       if (response.statusCode == 200) {
-        final data = ProductModel.fromJson(response.data);
+        final data = ProductModel.fromJson(jsonDecode(response.data));
         return data;
       }
     } catch (e) {
@@ -106,25 +108,20 @@ class ProductService {
 
   Future<List<ProductModel>> getAllProduct() async {
     try {
-      final response = await _dio.get(
-        '/products/',
-        options: Options(
-            headers: {'Authorization': 'Bearer ${_storage.read('token')}'}),
-      );
+      final response = await _dio.get('/products/');
       if (response.statusCode == 200) {
-        final List<dynamic> list = response.data;
-        final data = list
-            .map(
-              (e) => ProductModel.fromJson(e),
-            )
+        final List<dynamic> data = response.data;
+        final List<ProductModel> list = data
+            .map((json) => ProductModel.fromJson(json as Map<String, dynamic>))
             .toList();
-        return data;
+        return list;
       }
     } catch (e) {
       throw Exception('Error: $e');
     }
     return [];
   }
+
 
   Future<List<ProductModel>> searchProduct(String name) async {
     try {
@@ -133,7 +130,7 @@ class ProductService {
               options: Options(
               headers: {'Authorization': 'Bearer ${_storage.read('token')}'}),);
       if (response.statusCode == 200) {
-        final List<dynamic> list = response.data;
+        final List<dynamic> list = jsonDecode(response.data);
         final data = list
             .map(
               (e) => ProductModel.fromJson(e),
